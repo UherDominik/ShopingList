@@ -11,44 +11,44 @@ namespace LinqNakupSeznam
 		static void Main(string[] args)
 		{
 
-			string[] kategorie = { "ovoce a zelenina", "luštěniny", "pečivo", "mléčné výrobky", "maso", "sladkosti", "nápoje", "ostatní" };
-			List<Polozka> polozky = new List<Polozka>();
-			Polozka def = new Polozka("-");
+			string[] categories = { "ovoce a zelenina", "luštěniny", "pečivo", "mléčné výrobky", "maso", "sladkosti", "nápoje", "ostatní" };
+			List<Item> items = new List<Item>();
+			Item def = new Item("-");
 			
 
 
-			for (int i = 0; i < kategorie.Length; i++)
+			for (int i = 0; i < categories.Length; i++)
             {
-				Console.WriteLine($"[{i}]: {kategorie[i]}");
+				Console.WriteLine($"[{i}]: {categories[i]}");
             }
 			Console.WriteLine("-------------------------------------");
-			bool dalsiPolozka = true;
-            while (dalsiPolozka)
+			bool nextItem = true;
+            while (nextItem)
             {
 				Console.Write("Položka: ");
-				string nazev = Console.ReadLine();
+				string name = Console.ReadLine();
 				Console.Write("Kategorie: ");
-				int kat = int.Parse(Console.ReadLine());
+				int category = int.Parse(Console.ReadLine());
 				Console.Write("Přidat další položku [ano/ne]: ");
-				string souhlasDalsi = Console.ReadLine();
-				polozky.Add(new Polozka(nazev, kategorie[kat]));
-				if (souhlasDalsi == "ne")
+				string agreeNext = Console.ReadLine();
+				items.Add(new Item(name, categories[category]));
+				if (agreeNext == "ne")
 				{
-					dalsiPolozka = false;
+					nextItem = false;
 					Console.WriteLine("-------------------------------------");
 				}
 			}
-			var dotaz = from j in kategorie
-						join u in polozky on j equals u.Kategorie into ju
-						select new { Kategorie = j , Polozky = ju.DefaultIfEmpty(def)};
+			var task = from j in categories
+						join u in items on j equals u.Category into ju
+						select new { Category = j , Items = ju.DefaultIfEmpty(def)};
 
-			foreach (var skupina in dotaz)
+			foreach (var group in task)
 			{
 				Console.WriteLine();
-				Console.Write($" {(skupina.Kategorie).ToUpper()}: ");
-				foreach (var u in skupina.Polozky)
+				Console.Write($" {(group.Category).ToUpper()}: ");
+				foreach (var u in group.Items)
 				{
-					Console.Write(u.Nazev);
+					Console.Write(u.Name);
 					
 				}
 				Console.WriteLine();
